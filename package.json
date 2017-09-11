@@ -1,0 +1,36 @@
+{
+  "name": "azurechatopsbot",
+  "version": "1.0.0",
+  "description": "Azure Chat Ops Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+   
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephgou/AzureChatOpsBot.git"
+  },
+  "keywords": [
+    "chatops",
+    "bot",
+    "devops"
+  ],
+  "author": "Stéphane Goudeau",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stephgou/AzureChatOpsBot/issues"
+  },
+  "homepage": "https://github.com/stephgou/AzureChatOpsBot#readme",
+  "dependencies": {
+    "botbuilder": "^3.8.4",
+    "botbuilder-cognitiveservices": "^1.1.0",
+    "restify": "^5.0.0",
+    "azure-arm-compute": "^0.18.1",
+    "azure-arm-resource": "^1.4.4-preview",
+    "azure-arm-storage": "^0.13.1-preview",
+    "azure-arm-network": "^0.13.2",
+    "ms-rest-azure": "^1.14.3",
+    "async": "0.2.7"
+  }
+}
