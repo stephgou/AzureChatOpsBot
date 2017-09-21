@@ -23,7 +23,7 @@ var resourceClient, computeClient, storageClient, networkClient;
 var randomIds = {};
 var location = 'westeurope';
 var accType = 'Standard_LRS';
-var resourceGroupName = _generateRandomId('testrg', randomIds);
+var resourceGroupName = 'SG-RG-INTERNAL-COGNITIVE';
 var vmName = _generateRandomId('testvm', randomIds);
 var storageAccountName = _generateRandomId('testac', randomIds);
 var vnetName = _generateRandomId('testvnet', randomIds);
