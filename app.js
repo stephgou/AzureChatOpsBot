@@ -1,5 +1,9 @@
+
 var restify = require('restify');
 var builder = require('botbuilder');
+
+//var test = require('index.js');
+//var script =require("./index.js");
 
 //=========================================================
 // Bot Setup
@@ -97,6 +101,22 @@ bot.dialog('Hello', [
         session.send('Interruption Stop');
     }
 });
+
+bot.dialog('insulte', [
+    function (session, args, next) {
+        session.send('Désolé de t\'avoir énervé, et de ne pouvoir faire de concours d\'insulte. Demande à mon créateur des bots qui soient dans ce registre, si tu veux. ', session.message.text);
+        // try extracting entities
+
+        // End
+        session.endDialog();
+    }
+]).triggerAction({
+    matches: 'insulte',
+    onInterrupted: function (session) {
+        session.send('Interruption Stop');
+    }
+});
+
 
 bot.dialog('help', [
     function (session, args, next) {

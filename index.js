@@ -164,6 +164,7 @@ msRestAzure.loginWithServicePrincipalSecret(clientId, secret, domain, function (
   });
 });
 
+
 // Helper functions
 function createVM(finalCallback) {
   //We could have had an async.series over here as well. However, we chose to nest
