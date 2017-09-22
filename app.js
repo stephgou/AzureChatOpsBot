@@ -56,7 +56,7 @@ bot.dialog('Create', [
 
 
             if (serviceTypeEntity.trim()== 'vm') {
-                //session.send('vm', session.message.text);
+                
                 var osName = builder.EntityRecognizer.findEntity(args.intent.entities,'OS-NAME');
                 if (osName) {
                     // serviceType entity detected, continue to next step
@@ -83,7 +83,35 @@ bot.dialog('Create', [
     }
 });
 
+bot.dialog('Hello', [
+    function (session, args, next) {
+        session.send('Bonjour, je suis Chatops, et espère que tu passe une journée fantastique. Je peux t\'aider à utiliser azure; tape \' aide \' pour avoir toutes mes fonctionnalités ', session.message.text);
+        // try extracting entities
 
+        // End
+        session.endDialog();
+    }
+]).triggerAction({
+    matches: 'Hello',
+    onInterrupted: function (session) {
+        session.send('Interruption Stop');
+    }
+});
+
+bot.dialog('help', [
+    function (session, args, next) {
+        session.send('Je peux créer des services, les (re)démarrer, les arrêter ou te les lister. Tape \'liste-moi mes VM \' pour commencer', session.message.text);
+        // try extracting entities
+
+        // End
+        session.endDialog();
+    }
+]).triggerAction({
+    matches: 'help',
+    onInterrupted: function (session) {
+        session.send('Interruption Stop');
+    }
+});
 
 bot.dialog('Stop', [
     function (session, args, next) {
