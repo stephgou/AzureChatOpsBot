@@ -1,36 +1,4 @@
-var async = require('async');
-var a = function allezla (params, cb){
-    var resultat= "pas touché";
-    async.waterfall([
-        
-        function(callback){
-            callback(null, 'one', 'two');
-            var resultat=2;
-        },
-        function(arg1, arg2, callback){
-            // arg1 now equals 'one' and arg2 now equals 'two'
-            callback(null, 'three');
-        },
-        function(arg1, callback){
-            // arg1 now equals 'three'
-            callback(null, 'le bon résultat');
-        }
-    ], //function stuff (err, result) {
-        //console.log(result);
-    // result now equals 'done'
-    //var resultat=result;
-    //console.log("interne",(result));
-    //return (result);
-    //});
-cb);
-    
-    //return resultat;    
-    
-};
-console.log("a",a)
-
-//test= await allezla()
-//onsole.log("await",allezla());
-//console.log("usingItNow(mycallback)");
-//var a = test();
-//console.log("a",a);
+dict=JSON.parse('[ { "id": "/subscriptions/b1256985-d559-406d-a0ca-f47d72fed1e2/resourceGroups/SG-RG-INTERNAL-COGNITIVE/providers/Microsoft.Compute/virtualMachines/testvm1094","name": "testvm1094"}]');
+var json = '[{"result":true,"count":1}]';
+obj = JSON.parse(json);
+console.log(dict[0]["name"]);

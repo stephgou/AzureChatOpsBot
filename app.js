@@ -4,6 +4,7 @@ var builder = require('botbuilder');
 var script = require("./index.js");
 
 
+
 //=========================================================
 // Bot Setup
 //=========================================================
@@ -199,8 +200,13 @@ bot.dialog('List', [
         // try extracting entities
         //console.log("tu es sous le session send",script.listVMs());
         script.listVMs(function(err,text){
-            console.log(text);
-            session.send(text);
+            //console.log(text);
+            //console.log("trying to read the json",text[1]["name"]);
+            var output= readNames(text);
+
+            console.log("parsed");
+            //console.log(output);
+            session.send(output);
         });
         //session.send(script.listVMs());
         // End
@@ -215,7 +221,16 @@ bot.dialog('List', [
 
 intents.onDefault(builder.DialogAction.send("Je ne comprends pas !"));
 
-
+function readNames (string){
+    //dict = JSON.parse(string);
+    var result="";
+    for (var i in string){
+        result+=", ";
+        result+=string[i]["name"];
+    
+    }
+    return result;
+}
 
 //=========================================================
 // Bots Dialogs
