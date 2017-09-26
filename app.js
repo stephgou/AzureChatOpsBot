@@ -1,9 +1,8 @@
-
+'use strict';
 var restify = require('restify');
 var builder = require('botbuilder');
+var script = require("./index.js");
 
-//var test = require('index.js');
-//var script =require("./index.js");
 
 //=========================================================
 // Bot Setup
@@ -196,9 +195,14 @@ bot.dialog('Test', [
 
 bot.dialog('List', [
     function (session, args, next) {
-        session.send('List - We are analyzing your message: \'%s\'', session.message.text);
+        session.send('List - We understood you wanted to list: \'%s\'', session.message.text);
         // try extracting entities
-
+        //console.log("tu es sous le session send",script.listVMs());
+        script.listVMs(function(err,text){
+            console.log(text);
+            session.send(text);
+        });
+        //session.send(script.listVMs());
         // End
         session.endDialog();
     }
@@ -210,6 +214,8 @@ bot.dialog('List', [
 });
 
 intents.onDefault(builder.DialogAction.send("Je ne comprends pas !"));
+
+
 
 //=========================================================
 // Bots Dialogs
