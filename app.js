@@ -196,16 +196,13 @@ bot.dialog('Test', [
 
 bot.dialog('List', [
     function (session, args, next) {
-        session.send('List - We understood you wanted to list: \'%s\'', session.message.text);
-        // try extracting entities
-        //console.log("tu es sous le session send",script.listVMs());
+        console.log(session.connector["settings"]["endpoint"]);
+        session.send(session.connector["settings"]["endpoint"]["emulatorIssuerV1"]);
+        session.send('List - analyse de votre requête pour récupérer la liste');
         script.listVMs(function(err,text){
-            //console.log(text);
-            //console.log("trying to read the json",text[1]["name"]);
+            
             var output= readNames(text);
 
-            console.log("parsed");
-            //console.log(output);
             session.send(output);
         });
         //session.send(script.listVMs());
@@ -223,10 +220,11 @@ intents.onDefault(builder.DialogAction.send("Je ne comprends pas !"));
 
 function readNames (string){
     //dict = JSON.parse(string);
-    var result="";
+    var result="liste des VMs : ";
     for (var i in string){
-        result+=", ";
+        
         result+=string[i]["name"];
+        result+=", ";
     
     }
     return result;

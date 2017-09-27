@@ -338,28 +338,59 @@ function _validateEnvironmentVariables() {
 }
 
 
-function listVMs(callback)
-{ //resultat="blank";
-  console.log("start fred list");
+function listVMs(callback,param="virtualMachines")
+{ 
+  
   msRestAzure.loginWithServicePrincipalSecret(clientId, secret, domain, function (err, credentials, subscriptions) {
     if (err) return console.log(err);
     resourceClient = new ResourceManagementClient(credentials, subscriptionId);
     computeClient = new ComputeManagementClient(credentials, subscriptionId);
     storageClient = new StorageManagementClient(credentials, subscriptionId);
     networkClient = new NetworkManagementClient(credentials, subscriptionId);
-    console.log("on arrive là");
-    computeClient.virtualMachines.listAll(function (err, result) {
+    if(param=="virtualMachines"){
+      //console.log("virtual machine analysis");
+      computeClient.virtualMachines.listAll(function (err, result) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, result);
+          
+        }
+      });
+    }
+    else if (param=="toto") {
+      computeClient.virtualMachines.listAll(function (err, result) {
+        if (err) {
+          callback(err);
+        } else {
+          callback(null, result);
+          console.log("virtualMachineSizes",result);
+        }
+      });
+    }
+
+  });
+}
+
+function VraicreateVM(callback){
+  msRestAzure.loginWithServicePrincipalSecret(clientId, secret, domain, function (err, credentials, subscriptions) {
+    if (err) return console.log(err);
+    resourceClient = new ResourceManagementClient(credentials, subscriptionId);
+    computeClient = new ComputeManagementClient(credentials, subscriptionId);
+    storageClient = new StorageManagementClient(credentials, subscriptionId);
+    networkClient = new NetworkManagementClient(credentials, subscriptionId);
+    createVM(function (err, result) {
       if (err) {
-        //console.log(util.format('\n???????Error in Task5: while listing all the vms under ' + 
-         // 'the current subscription:\n%s', util.inspect(err, { depth: null })));
+        console.log(util.format('\n???????Error in Task1: while creating a VM:\n%s', 
+          util.inspect(err, { depth: null })));
         callback(err);
       } else {
-        //console.log(util.format('\n######End of Task5: List all the vms under the current ' + 
-        //  'subscription is successful.\n%s', util.inspect(result, { depth: null })));
+        console.log(util.format('\n######End of Task1: Create a VM is succesful.\n%s', 
+          util.inspect(result, { depth: null })));
         callback(null, result);
       }
     });
-  });
+  });  
 }
 
 function _generateRandomId(prefix, exsitIds) {
