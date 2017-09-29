@@ -52,9 +52,10 @@ bot.dialog('Create', [
         // try extracting entities
 
         var serviceType = builder.EntityRecognizer.findEntity(args.intent.entities,'SERVICE-TYPE');
+        console.log(serviceType);
         if (serviceType) {
             // serviceType entity detected, continue to next step
-            serviceTypeEntity = serviceType.entity;
+            var serviceTypeEntity = serviceType.entity;
 
             //session.send(serviceTypeEntity, session.message.text);
 
@@ -64,7 +65,14 @@ bot.dialog('Create', [
                 var osName = builder.EntityRecognizer.findEntity(args.intent.entities,'OS-NAME');
                 if (osName) {
                     // serviceType entity detected, continue to next step
-                    session.send(osName.entity, session.message.text);
+                    script.VraicreateVM(function(err,text){
+                        console.log(text);
+                        var output= readNames(text);
+            
+                        session.send("très bien, je lance la création d'une VM",output,"cela devrait prendre une minute");
+                    }
+                )
+                    session.send("debug",osName.entity, session.message.text);
                 }
                 else {
                     builder.Prompts.text(session, "Quel Système d'exploitation ?");
@@ -120,7 +128,7 @@ bot.dialog('insulte', [
 
 bot.dialog('help', [
     function (session, args, next) {
-        session.send('Je peux créer des services, les (re)démarrer, les arrêter ou te les lister. Tape \'liste-moi mes VM \' pour commencer', session.message.text);
+        session.send('Je peux créer des services, les démarrer, les arrêter ou te les lister. Tape \'liste-moi mes VM \' pour commencer', session.message.text);
         // try extracting entities
 
         // End
@@ -137,7 +145,11 @@ bot.dialog('Stop', [
     function (session, args, next) {
         session.send('Stop - We are analyzing your message: \'%s\'', session.message.text);
         // try extracting entities
-
+        //var serviceType = builder.EntityRecognizer.findEntity(args.intent.entities,'SERVICE-TYPE');
+        //script.poweroff()
+        script.poweroff(args.intent.entities[0]["entity"],function(err,result){
+            return result
+        });
         // End
         session.endDialog();
     }
@@ -152,7 +164,9 @@ bot.dialog('Start', [
     function (session, args, next) {
         session.send('Start - We are analyzing your message: \'%s\'', session.message.text);
         // try extracting entities
-
+        script.startVM(args.intent.entities[0]["entity"],function(err,result){
+            return result
+        });
         // End
         session.endDialog();
     }
@@ -160,21 +174,6 @@ bot.dialog('Start', [
     matches: 'Start',
     onInterrupted: function (session) {
         session.send('Interruption Start');
-    }
-});
-
-bot.dialog('Restart', [
-    function (session, args, next) {
-        session.send('Restart - We are analyzing your message: \'%s\'', session.message.text);
-        // try extracting entities
-
-        // End
-        session.endDialog();
-    }
-]).triggerAction({
-    matches: 'Restart',
-    onInterrupted: function (session) {
-        session.send('Interruption Restart');
     }
 });
 
@@ -196,8 +195,8 @@ bot.dialog('Test', [
 
 bot.dialog('List', [
     function (session, args, next) {
-        console.log(session.connector["settings"]["endpoint"]);
-        session.send(session.connector["settings"]["endpoint"]["emulatorIssuerV1"]);
+        console.log("user data",session.userData);
+        //session.send(session.userData);
         session.send('List - analyse de votre requête pour récupérer la liste');
         script.listVMs(function(err,text){
             

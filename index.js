@@ -62,7 +62,7 @@ function dostuff(callback){
     networkClient = new NetworkManagementClient(credentials, subscriptionId);
     
     async.series([
-      function (  ) {
+      function (callback) {
         ///////////////////////////////////////////////////////////////////////////////////
         //Task1: Create VM. This is a fairly complex task. Hence we have a wrapper method//
         //named createVM() that encapsulates the steps to create a VM. Other tasks are   //
@@ -403,7 +403,59 @@ function _generateRandomId(prefix, exsitIds) {
   }
   return newNumber;
 }
+
+function poweroff(vmName="testvm1094",callback) {
+  ///////////////////////////
+  //Task3: Poweroff the VM.//
+  ///////////////////////////
+  msRestAzure.loginWithServicePrincipalSecret(clientId, secret, domain, function (err, credentials, subscriptions) {
+    if (err) return console.log(err);
+    resourceClient = new ResourceManagementClient(credentials, subscriptionId);
+    computeClient = new ComputeManagementClient(credentials, subscriptionId);
+    storageClient = new StorageManagementClient(credentials, subscriptionId);
+    networkClient = new NetworkManagementClient(credentials, subscriptionId);
+  console.log('\n>>>>>>>Start of Task3: Poweroff the VM: ' + vmName);
+//  computeClient.virtualMachines.powerOff(resourceGroupName, vmName, function (err, result) {
+  computeClient.virtualMachines.powerOff("SG-RG-INTERNAL-COGNITIVE", vmName, function (err, result) {
+    if (err) {
+      console.log(util.format('\n???????Error in Task3: while powering off the VM:\n%s', 
+        util.inspect(err, { depth: null })));
+      callback(err);
+    } else {
+      console.log(util.format('\n######End of Task3: Poweroff the VM is successful.\n%s', 
+        util.inspect(result, { depth: null })));
+      callback(null, result);
+    }
+  });});
+}
+//dostuff();
+function startVM(vmName,callback){
+  msRestAzure.loginWithServicePrincipalSecret(clientId, secret, domain, function (err, credentials, subscriptions) {
+    if (err) return console.log(err);
+    resourceClient = new ResourceManagementClient(credentials, subscriptionId);
+    computeClient = new ComputeManagementClient(credentials, subscriptionId);
+    storageClient = new StorageManagementClient(credentials, subscriptionId);
+    networkClient = new NetworkManagementClient(credentials, subscriptionId);
+  console.log('\n>>>>>>>Starting the VM: ' + vmName);
+  computeClient.virtualMachines.start(resourceGroupName, vmName, function (err, result) {
+    if (err) {
+      console.log(util.format('\n???????Error in Task4: while starting the VM:\n%s', 
+        util.inspect(err, { depth: null })));
+      callback(err);
+    } else {
+      console.log(util.format('\n######End of Task4: Start the VM is successful.\n%s', 
+        util.inspect(result, { depth: null })));
+      callback(null, result);
+    }
+  });
+});
+}
+
+
 module.exports = {
-  listVMs
+  listVMs,
+  VraicreateVM,
+  poweroff,
+  startVM
   
 };
